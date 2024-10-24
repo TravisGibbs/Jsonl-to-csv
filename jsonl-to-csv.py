@@ -1,6 +1,17 @@
-@author: Yasir hussain
-"""
+import script
+import argparse
 
+parser = argparse.ArgumentParser(
+    description='Queries Aeroleads for people in a project and propagates new external profiles.'
+)
+
+parser.add_argument(
+    '--file-path',
+    type=str,
+    help='Print operations but do not execute them, only applies to propagation here will still write ext_profiles',
+)
+
+_args = script.parse_args(parser)
 
 import glob
 import json
@@ -14,18 +25,18 @@ start = time.time()
 from flatten_json import flatten
 
 #Path of jsonl file
-    File_path = 'path-to-folder-that-contains-jsonl-files'
-#reading all jsonl files
-    files = [f for f in glob.glob( File_path + "**/*.jsonl", recursive=True)]
-i=0
-for f in files:
-    with open(f, 'r') as F:
-        for line in F:
-#flatten json files 
-            data = json.loads(line)
-            data_1=flatten(data)
-#creating csv files  
-            with open('path-to-csv-file.csv', 'a' , newline='') as f:
-                thewriter = csv.writer(f)
-#headers should be the Key values from json files that make Coulmn header
-                thewriter.writerow([data_1['header1'],data_1['header2']])
+File_path = _args.file_path
+
+with open(f, 'r') as read_file, open('path-to-csv-file.csv', 'a' , newline='') as write_file:
+    csv_writer = csv.writer(f)
+
+    # Write header
+    
+    for line in read_file:
+        #flatten json files 
+        json_data = json.loads(line)
+        json_data_flat = flatten(json_data)
+        
+        #creating csv file
+        csv_writer.
+        thewriter.writerow([data_1['header1'],data_1['header2']])
